@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jQuery Change and Click Event</title>
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
+        <script>
+            $(function(){
+                $("button").click(function(event){
+                    $("p").html(`
+                        X Position : ${event.clientX} <br>
+                        Y Position : ${event.clientY} <br>
+                        Button Name : ${event.target.name} <br>
+                        Button ID : ${event.target.id} <br>
+                    `)
+                })
+                $("select").change(function(){
+                    $("#msg").html(`Selected city : ${$("select").val()}`);
+                })
+            })
+        </script>
+    </head>
+    <body>
+        <button id="btnInsert" name="Insert">Insert</button>
+        <p></p>
+        <select>
+            <option>Delhi</option>
+            <option>Hyd</option>
+        </select>
+        <br>
+        <div id="msg"></div>
+    </body>
+</html>

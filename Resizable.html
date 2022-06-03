@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jQueryUI library Draggable</title>
+        <link rel="stylesheet" href="../node_modules/jquery-ui/jquery-ui.css">
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
+        <script src="../node_modules/jquery-ui/jquery-ui.js"></script>
+        <script>
+            $(function(){
+                $("img").resizable();       
+                $("#pic").resizable().draggable();        //we can use draggable().resizable() both at time if u want    
+            })
+        </script>
+    </head>
+    <body>
+            <img src="../assets/Shoe.PNG" id="pic" width="200" height="200">
+            <img src="../assets/person.jpg" width="200" height="200">
+    </body>
+</html>

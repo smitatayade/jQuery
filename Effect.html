@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jQuery Change and Click Event</title>
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
+        <script>
+            $(function(){
+                $("button").click(function(){
+                    $("#pic").toggle(2000);         //toggle measn it can show and hide the img
+                })
+               
+            })
+        </script>
+    </head>
+    <body>
+        <button>Show | Hide</button>
+        <br>     
+        <div id="pic">
+            <img src="../assets/Shirt.PNG" width="200" height="200">
+        </div>
+    </body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jQuery</title>
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
+        <script>
+            $(function(){
+               $("button").click(function(){
+                    $("P").html(`Hello ! ${$("#username").val()}`);
+               })
+            })
+        </script>
+    </head>
+    <body>
+        Your Name: <input type="text" id="username">
+        <button>Submit</button>
+        <p></p>
+    </body>
+</html>

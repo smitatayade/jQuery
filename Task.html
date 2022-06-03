@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Shopping - Online</title>
+        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
+        <style>
+            #productsContainer{
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .card{
+                width:300px;
+                margin: 20px;
+            }
+        </style>
+        <script>
+           $(function(){
+               var categories= [];
+               function loadCategories(){
+                   $.ajax({
+                       method: 'GET',
+                       url: "https://fakestoreapi.com/products/categories",
+                       success: function(response){
+                           categories= response;
+                           $.each(categories,function(key,value){
+                               $(`<option>${value.toUpperCase()}</option>`).appendTo("#lstCategories");
+                           });
+                       },
+                       error: function(xhr){
+                           console.log(xhr.statusText);
+                       }
+                   });
+               }
+               loadCategories();
+
+               function LoadProductsIntoBody(data){
+                   $.each(data, function(key,product){
+                       $(`
+                          <div class="card">
+                            <img src=${product.image} height="150" class="card-img-top">
+                            <div class="card-header">
+                              <h3>${product.title}</h3>
+                              <p>&#8377; ${product.price}</p>
+                            </div>
+                            <div class="card-body">
+                                <p>${product.description}</p>
+                            </div>
+                           
+                          </div>
+                       `).appendTo("#productsContainer");
+                   })
+               }
+
+               function LoadProducts(){
+                   $.ajax({
+                      method: "GET",
+                      url: "https://fakestoreapi.com/products",
+                      success: function(response){
+                          window.products= response;
+                          LoadProductsIntoBody(products);
+                      }
+                   });
+               }
+               LoadProducts();
+              
+               $("#lstCategories").change(function(){
+                   var selectedCategory= $("#lstCategories").val().toLowerCase();
+                   window.searchedProducts= products.filter(item=>item.category==selectedCategory);
+                   $("#productsContainer").html("");
+                   $("#lstProducts").html("");
+                   $.each(searchedProducts,function(key,item){
+                    $(`<option value="${item.title}">${item.title}</option>`).appendTo("#lstProducts");
+                   });
+                   LoadProductsIntoBody(searchedProducts);
+               })
+            
+               var searchedselected;
+
+               $("#lstProducts").change(function(){
+                var selectedProduct= $("#lstProducts").val();
+                searchedselected= products.find(item=>item.title==selectedProduct);
+                $("#cdheader").html(searchedselected.title);
+                $("#cardbody").html("");
+                $(`<img src= ${searchedselected.image} height="150" width="150">`).appendTo("#cardbody");
+                $("#cdprice").html(searchedselected.price);
+               })
+             
+               var cartItems= [];
+               $("#cdbutton").click(function(){
+                   cartItems.push(searchedselected);
+                   $("#Itemcount").html(cartItems.length);
+               })
+
+               $("#displayCart").click(function(){
+                   $.each(cartItems,function(key,item){
+                       $(`
+                          <tr>
+                            <td>${item.title}</td>
+                            <td>${item.price}</td>
+                            <td>
+                                <img src="${item.image}" height="100" width="100">
+                            </td>
+                          </tr>
+                       `).appendTo("#tbody");
+                   });
+               })
+            })
+        </script>
+    </head>
+    <body>
+         <header class="text-white bg-danger text-center p-2">
+             <h3>Shopping - Online</h3>
+         </header>
+         <div class="mt-3 row">
+             <div class="col-3 ms-2">
+                <label class="form-label">Select a Category</label>
+                <select id="lstCategories" class="form-select">
+
+                </select>
+                <div class="my-2">
+                  <label class="form-label">Select Product</label>
+                  <select id="lstProducts" class="form-select">
+
+                  </select>
+                </div>
+                <div id="productCard" class="mt-3">
+                     <div class="card">
+                        <div class="card-header">
+                            <h4 id="cdheader"></h4>
+                        </div>
+                        <div class="card-body text-center" id="cardbody">
+
+                        </div>
+                        <div class="card-footer d-grid">
+                            <h3 id="cdprice" class="text-center"><span>&#8377;</span></h3>
+                            <button class="btn btn-danger" id="cdbutton">
+                                Add To Cart
+                            </button>
+                        </div>
+                     </div>
+                </div>
+             </div>
+
+             <div class="col">
+                <div id="productsContainer" style="height: 500px; overflow: auto;">
+
+                </div>
+             </div>
+
+              <div class="col-2">
+                <div class="mt-3">
+                    <button id="displayCart" class="btn btn-success me-2" data-bs-target="#cart" data-bs-toggle="modal">
+                        <span class="badge bg-dark" id="Itemcount"></span>
+                        <span class="bi bi-cart3"></span>
+                        Your Cart Items
+                    </button>
+                    <div class="modal fade show" id="cart">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                     <h3>Your Cart Items</h3>
+                                     <span class="btn btn-close" data-bs-dismiss="modal"></span>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Price</th>
+                                                <th>Photo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                   <div class="text-center">
+                                    <button class="btn btn-outline-success" id="placeorder">Place Order</button>
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+         </div>
+
+         <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    </body>
+</html>

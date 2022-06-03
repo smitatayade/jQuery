@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jQuery</title>
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
+        <script>
+            $(function(){
+                $("p").append("jQuery");        //it will add jQuery to paragraph last.
+                $("p").prepend("JQUERY");       //it will add JQUERY to start of paragraph.
+                $("p").before("JAVASCRIPT LIBRARY");    // IT WILL ADD JAVASCRIPT LIBARY TO ABOVE THE PARAGRAPH
+                $("p").after("javascript library");     //it will add javascript library below the paragraph.
+                $("<h2>html</h2>").appendTo("h2");
+        })
+        </script>
+    </head>
+    <body>
+        <p>Write less do more</p>
+        <h2></h2>
+    </body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Shopping - Online</title>
+        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="../node_modules/jquery-ui/jquery-ui.min.css"> 
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
+        <style>
+            #productsContainer {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .card {
+                width: 350px;
+                margin: 20px;
+            }
+        </style>
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
+        <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        <script src="../node_modules/jquery-ui/jquery-ui.min.js"></script>
+        <script>
+            $(function(){
+                var categories = [];
+                
+                
+                function LoadCategories(){
+                    $.ajax({
+                    method: "GET",
+                    url: "http://fakestoreapi.com/products/categories",
+                    success: function(response){
+                        categories = response;
+                        $.each(categories, function(key, value){
+                          $(`<option>${value.toUpperCase()}</option>`).appendTo("#lstCategories");
+                        });
+                    },
+                    error: function(xhr){
+                        console.log(xhr.statusText);
+                    }
+                  });
+                }
+                LoadCategories();
+
+                function LoadProductsIntoBody(data){
+                    $.each(data, function(key, product){
+                            $(`
+                              <div class="card">
+                                <img src=${product.image} height="150" class="card-img-top">
+                                <div class="card-header">
+                                  <h3>${product.title}</h3>
+                                  <p> &#8377; ${product.price}</p>
+                                </div>
+                                <div class="card-body">
+                                  <p> ${product.description}</p>
+                                </div>
+                                <div class="card-footer d-grid">
+                                    <button id="btnAdd" class="btn btn-danger">
+                                      <span class="bi bi-cart4"></span> Add to Cart
+                                    </button>
+                                </div>
+                              </div>
+                            `).appendTo("#productsContainer");
+                        })
+                }
+               
+
+
+                function LoadProducts(){
+                    $.ajax({
+                    method: "GET", 
+                    url: "http://fakestoreapi.com/products", 
+                    success: function(response) {
+                        window.products = response;
+                        LoadProductsIntoBody(products);
+                    }
+                  });
+                }
+                LoadProducts();
+
+                $("#lstCategories").change(function(){
+                    
+                    var selectedCategory = $("#lstCategories").val().toLowerCase();
+                    var searchedProducts = products.filter(item=>item.category==selectedCategory);
+                    $("#productsContainer").html("");
+                    LoadProductsIntoBody(searchedProducts);
+                })
+
+            })
+           
+                var cartItem = [];
+                $(document).on('click',"#btnAdd",function(){
+                  var searchedProducts = products.filter(item=>item.category==se);
+                  cartItem.push(searchedProducts);
+                  $("#itemCount").html(cartItem.length)
+                  alert("Product Added to Cart");   
+                    
+                  
+                })
+                $(document).on('click',"#cartClick",function(){
+                  
+                 $("#dialog").dialog();
+                  
+               
+                  
+                })
+
+            
+
+               
+            
+        </script>
+    </head>
+    <body class="container-fluid">
+        <header class="bg-danger text-white text-center p-2">
+            <h1> <span class="bi bi-cart"></span> Shopping  - Online </h1>
+        </header>
+        <div class="mt-3 row">
+            <div class="col-2">
+               <div class="mt-2">
+                 <label class="form-label">Select a Category</label>
+                 <div>
+                    <select id="lstCategories" class="form-select">
+                        
+                    </select>
+                 </div>
+               </div>
+            </div>
+            
+            
+            <div class="col-8">
+                <div id="productsContainer" style="height: 500px; overflow: auto;">
+
+                </div>
+            </div>
+            <div class="col-2">
+              <button class="btn btn-warning" id="cartClick">
+            
+                Your Cart Items
+            </button>
+              <div id="dialog" style="display:none">
+              
+              </div>
+            </div>
+           
+        </div>
+    </body>
+</html>

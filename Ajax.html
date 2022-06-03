@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jQuery Ajax</title>
+        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
+        <script>
+            $(function(){
+                $("button").click(function(){
+                    $.ajax({
+                        url: '../docs/Ajax.txt',        //u can give here any html file also.
+                        method:'GET',
+                        success: function(response){
+                            $("p").html(response);
+                        },
+                        error: function(xhr,status,error){      //error shows which erroe is their,  status shows status like 404 for not found 200 for ok,   xhr is object which shows status and so many options.
+                            if(xhr.status==404) {
+                                $("p").html("File you Requested - Not Found");
+                            }
+                        }
+                    })
+                })
+            })
+        </script>
+    </head>
+    <body class="container-fluid">
+        <div class="mt-3">
+            <button class="btn btn-primary">Show Help</button>
+        </div>
+        <div class="mt-3">
+            <p></p>
+        </div>
+        
+    </body>
+</html>

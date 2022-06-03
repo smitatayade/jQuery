@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>For each Dynaic Element</title>
+        <script src="../node_modules/jquery/dist/jquery.js"></script>
+        <script>
+            var categories = ["Electronics", "Footwear","Fashion"];
+            $(function(){
+                $.each(categories, function(key,value){
+                    $(`<li>${value}</li>`).appendTo("ol");
+                    $(`<option>${value}</option>`).appendTo("select");
+                })
+            })
+        </script>
+    </head>
+    <body>
+        <h2>Categories List</h2>
+        <ol>
+
+        </ol>
+        <h2>Select Category</h2>
+        <select>
+
+        </select>
+    </body>
+</html>
